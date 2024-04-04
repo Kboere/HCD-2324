@@ -1,112 +1,68 @@
-// console.log("Hello from index.js");
+let selectedPoints = [];
+let isEventListenerAttached = false;
+let paragraphs = document.querySelectorAll("#paragraph");
+let selectButton = document.getElementById("selectButton");
 
-let copyTimeout;
-let popupTimeout;
-const popup = document.getElementById("popup");
+// Function to handle word selection
+function handleWordSelection(event) {
+    let range = document.caretRangeFromPoint(event.clientX, event.clientY);
+    let clickedPoint = range.cloneRange();
+    clickedPoint.collapse(true);
 
-// // document.addEventListener("selectionchange", () => {
-// //     clearTimeout(copyTimeout);
-// //     clearTimeout(popupTimeout);
-// //     copyTimeout = setTimeout(() => {
-// //         copySelectedText();
-// //     }, 2000);
-// // });
-
-// function copySelectedText() {
-//     let selectedText = window.getSelection().toString();
-//     if (selectedText !== "") {
-//         const tempInput = document.createElement("textarea");
-//         tempInput.value = selectedText;
-//         document.body.appendChild(tempInput);
-//         tempInput.select();
-//         document.execCommand("copy");
-//         document.body.removeChild(tempInput);
-
-//         // Show the popup
-//         popup.classList.remove("hide");
-//         popup.style.display = "block";
-//         console.log("Popup shown");
-//     } else {
-//         popup.classList.add("hide");
-//         setTimeout(() => {
-//             popup.style.display = "none";
-//             console.log("Popup hidden");
-//         }, 500); // Adjust the timeout to match the animation duration
-//     }
-// }
-
-
-const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-const SpeechGrammarList = window.SpeechGrammarList || window.webkitSpeechGrammarList;
-const SpeechRecognitionEvent = window.SpeechRecognitionEvent || window.webkitSpeechRecognitionEvent;
-
-const commands = ['copy', 'kopieer', 'kopiëren'];
-
-const recognition = new SpeechRecognition();
-if (SpeechGrammarList) {
-  const speechRecognitionList = new SpeechGrammarList();
-  const grammar = `#JSGF V1.0; grammar commands; public <command> = ${commands.join(' | ')} ;`;
-  speechRecognitionList.addFromString(grammar, 1);
-  recognition.grammars = speechRecognitionList;
-}
-recognition.continuous = false;
-recognition.lang = 'nl-NL';
-recognition.interimResults = false;
-recognition.maxAlternatives = 1;
-
-const diagnostic = document.querySelector('.output');
-const hints = document.querySelector('.hints');
-
-let commandHTML = '';
-commands.forEach(v => {
-  commandHTML += `<span> ${v} </span>`;
-});
-hints.innerHTML = `Tap/click then say a command to copy the text. Try ${commandHTML}.`;
-
-// Start recognition when text is clicked or selected
-document.addEventListener('click', event => {
-  if (event.target.nodeName === 'TEXTAREA' || event.target.nodeName === 'INPUT' || window.getSelection().toString() !== "") {
-    recognition.start();
-    console.log('Ready to receive a command command.');
-  }
-});
-
-recognition.onresult = event => {
-  const command = event.results[0][0].transcript.trim().toLowerCase(); // Normalize input
-  diagnostic.textContent = `Result received: ${command}.`;
-  console.log(`Confidence: ${event.results[0][0].confidence}`);
-
-  if (commands.includes(command)) { // Check if the recognized command is in the predefined array
-    const selectedText = window.getSelection().toString();
-    if (selectedText !== "") {
-      const tempInput = document.createElement("textarea");
-      tempInput.value = selectedText;
-      document.body.appendChild(tempInput);
-      tempInput.select();
-      document.execCommand("copy");
-      document.body.removeChild(tempInput);
-
-      // Show the popup
-      popup.classList.remove("hide");
-      popup.style.display = "block";
-      console.log("Popup shown");
+    if (selectedPoints.length < 2) {
+        selectedPoints.push(clickedPoint);
     }
-  } else {
-    diagnostic.textContent = "I didn't recognise that command.";
-    popup.classList.add("hide");
-  }
-};
 
-recognition.onspeechend = () => {
-  recognition.stop();
-};
+    if (selectedPoints.length === 2) {
+        // Remove the highlighted class from previously selected words
+        document.querySelectorAll(".highlighted").forEach(element => {
+            element.classList.remove("highlighted");
+        });
 
-recognition.onnomatch = event => {
-  diagnostic.textContent = "I didn't recognise that command.";
-};
+        // Create a range that spans the two selected points
+        let selectionRange = document.createRange();
+        selectionRange.setStart(selectedPoints[0].startContainer, selectedPoints[0].startOffset);
+        selectionRange.setEnd(selectedPoints[1].startContainer, selectedPoints[1].startOffset);
 
-recognition.onerror = event => {
-  diagnostic.textContent = `Error occurred in recognition: ${event.error}`;
-};
+        // Log the selected text to the console
+        let selectedText = selectionRange.toString();
+        console.log("Selected Text:", selectedText);
 
+        // Copy the selected text to the clipboard
+        navigator.clipboard.writeText(selectedText)
+            .then(() => console.log('Text copied to clipboard'))
+            .catch(err => console.error('Could not copy text: ', err));
 
+        // Highlight the selection
+        let selection = window.getSelection();
+        selection.removeAllRanges();
+        selection.addRange(selectionRange);
+
+        // Reset selection
+        selectedPoints = [];
+    }
+}
+
+// Function to toggle word selection on all paragraphs
+function toggleWordSelection() {
+    paragraphs.forEach(paragraph => {
+        if (isEventListenerAttached) {
+            paragraph.removeEventListener("click", handleWordSelection);
+            paragraph.classList.remove("selectable");
+        } else {
+            paragraph.addEventListener("click", handleWordSelection);
+            paragraph.classList.add("selectable");
+        }
+    });
+
+    isEventListenerAttached = !isEventListenerAttached;
+
+    if (isEventListenerAttached) {
+        console.log("je kunt selecteren");
+    } else {
+        console.log("je kunt niet selecteren");
+    }
+}
+
+// Attach event listener to the select button
+selectButton.addEventListener("click", toggleWordSelection);
