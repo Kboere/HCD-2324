@@ -80,12 +80,16 @@ function toggleWordSelection() {
 }
 
 // Attach event listener to the select button
-// selectButton.addEventListener("click", toggleWordSelection);
-
-// Attach event listener to the select button
 selectButton.addEventListener("click", function(event) {
     // Prevent the button click from being registered as the first click
     event.stopPropagation();
     // Toggle word selection
     toggleWordSelection();
   });
+
+
+  // TODO: make paste button work
+  // TODO: create a function to handle pasting text
+  // TODO: test if images can be copied and pasted
+
+  

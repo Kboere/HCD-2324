@@ -14,11 +14,6 @@
     animation: blinking infinite linear 0.5s;
 }
 
-.disableClick {
-    user-select: none;
-    -moz-user-select: none;
-    -webkit-user-select: none;
-}
 
 /* <div id="popup" class="popup">Text copied to clipboard!</div> */
   
