@@ -4,6 +4,23 @@
 #paragraph.selectable{
     cursor: copy;
 }
+
+.first-click-indicator {
+    display: inline-block;
+    position: absolute;
+    width: 5px;
+    height: 1em;
+    background-color: yellow;
+    animation: blinking infinite linear 0.5s;
+}
+
+.disableClick {
+    user-select: none;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+}
+
+/* <div id="popup" class="popup">Text copied to clipboard!</div> */
   
 .popup {
     display: none;
@@ -21,6 +38,16 @@
 
 .popup.hide {
     animation: slideOutRight 0.5s ease forwards;
+}
+
+@keyframes blinking {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
 }
 
 @keyframes slideInRight {
