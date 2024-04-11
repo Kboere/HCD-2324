@@ -1,7 +1,21 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+:root {
+    --primary-color: #fff;
+    --secondary-color: #333;
+    --tertiary-color: yellow;
+
+    --light-gray: #f2f2f2;
+}
+
 ::selection {
-    background-color: yellow; /* Change this to any color you prefer */
-  }
-#paragraph.selectable{
+    background-color: var(--tertiary-color); /* Change this to any color you prefer */
+}
+
+#paragraph.selectable {
     cursor: copy;
 }
 
@@ -10,13 +24,159 @@
     position: absolute;
     width: 5px;
     height: 1em;
-    background-color: yellow;
+    background-color: var(--primary-color);
     animation: blinking infinite linear 0.5s;
 }
 
+body {
+    position: relative;
+    background-color: rgb(0, 0, 0);
+    background-image: radial-gradient(at 40% 20%, hsla(28, 100%, 74%, 1) 0px, transparent 50%),
+        radial-gradient(at 80% 0%, hsla(189, 100%, 56%, 1) 0px, transparent 50%),
+        radial-gradient(at 0% 50%, hsla(355, 100%, 93%, 1) 0px, transparent 50%),
+        radial-gradient(at 80% 50%, hsla(340, 100%, 76%, 1) 0px, transparent 50%),
+        radial-gradient(at 0% 100%, hsla(22, 100%, 77%, 1) 0px, transparent 50%),
+        radial-gradient(at 80% 100%, hsla(242, 100%, 70%, 1) 0px, transparent 50%),
+        radial-gradient(at 0% 0%, hsla(343, 100%, 76%, 1) 0px, transparent 50%);
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    height: 100dvh;
+    width: 100dvw;
+    overflow: auto;
+    font-family: sans-serif;
+}
+
+header {
+    position: relative;
+    top: 0;
+    left: 0;
+    z-index: 9999;
+    background: #fff;
+    padding: 20px;
+    height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 70px;
+    transition: all 0.3s ease;
+    transform-style: preserve-3d;
+    box-shadow: inset 0 0 0 100vw rgba(255, 255, 255, 0.3);
+
+    &.open {
+        & #options {
+            opacity: 1;
+            left: 120px;
+        }
+    }
+
+    & button#menuToggle {
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        text-align: center;
+        font-size: 2rem;
+        display: flex;
+        position: relative;
+        background: #fff;
+        padding: 0;
+        align-content: center;
+        align-items: center;
+        justify-content: center;
+        border: none;
+        color: var(--secondary-color);
+        transition: all 0.3s ease;
+        cursor: pointer;
+
+        &:focus-visible,
+        &:hover {
+            color: var(--secondary-color);
+            outline: none;
+        }
+
+        & i {
+            margin-left: -7px;
+        }
+    }
+
+    & #options {
+        position: absolute;
+        left: 0;
+        width: 120px;
+        background-color: hsl(0deg 47.03% 80.72%);
+        background-image: radial-gradient(at 40% 20%, hsla(28, 100%, 74%, 0.25) 0px, transparent 50%),
+            radial-gradient(at 80% 0%, hsla(189, 100%, 56%, 0.33) 0px, transparent 50%),
+            radial-gradient(at 0% 50%, hsla(355, 100%, 93%, 0.29) 0px, transparent 50%),
+            radial-gradient(at 80% 50%, hsla(340, 100%, 76%, 0.27) 0px, transparent 50%),
+            radial-gradient(at 0% 100%, hsla(22, 100%, 77%, 0.28) 0px, transparent 50%),
+            radial-gradient(at 80% 100%, hsla(241, 100%, 70%, 0.31) 0px, transparent 50%),
+            radial-gradient(at 0% 0%, hsla(343, 100%, 76%, 0.3) 0px, transparent 50%);
+        padding: 20px;
+        border-radius: 10px;
+        transform: translateZ(-1px);
+        opacity: 0;
+        transition: all 0.3s ease;
+
+        & button {
+            background: transparent;
+            border: 2px var(--primary-color);
+            border-style: dashed solid;
+            padding: 2rem 1rem;
+            margin-bottom: 1rem;
+            border-radius: 5px;
+            width: 100%;
+
+            &:hover,
+            :focus-visible {
+                background: var(--light-gray);
+                cursor: pointer;
+                outline: none;
+                color: var(--secondary-color);
+            }
+        }
+    }
+}
+
+main {
+    --box-width: 350px;
+    display: flex;
+    gap: 1rem;
+    flex-wrap: nowrap;
+    flex-direction: row;
+    position: absolute;
+    height: calc(100dvh - 40px);
+    width: calc(100% - 160px);
+    top: 50%;
+    left: 140px;
+    transform: translateY(-50%);
+    overflow: auto;
+
+    & section {
+        min-width: var(--box-width);
+        height: fit-content;
+        background: var(--light-gray);
+        padding: 20px;
+        border-radius: 5px;
+
+        & .top-column {
+            margin-bottom: 10px;
+        }
+
+        & .content {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+
+            & .box {
+                background-color: var(--primary-color);
+                padding: 20px;
+                border-radius: 10px;
+            }
+        }
+    }
+}
 
 /* <div id="popup" class="popup">Text copied to clipboard!</div> */
-  
+
 .popup {
     display: none;
     position: fixed;
