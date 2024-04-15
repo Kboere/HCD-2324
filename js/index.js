@@ -1,7 +1,8 @@
 const selectedPoints = [];
 const body = document.body;
+const main = document.querySelector("main");
 const selectButton = document.getElementById("selectButton");
-const pasteButton = document.getElementById("pasteButton");
+const pasteButton = document.getElementById("pasteButton"); 
 
 // Function to handle word selection
 function handleWordSelection(event) {
@@ -121,8 +122,6 @@ if (pasteButton) {
 
 const menuBtn = document.getElementById("menuToggle");
 const header = document.querySelector("header");
-const main = document.querySelector("main");
-
 
 menuBtn.addEventListener("click", function() {
     header.classList.toggle("open");
