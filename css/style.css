@@ -157,6 +157,7 @@ main {
 
     & section {
         min-width: var(--box-width);
+        max-width: var(--box-width);
         height: fit-content;
         background: var(--light-gray);
         padding: 20px;
