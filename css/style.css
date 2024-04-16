@@ -15,6 +15,10 @@
     background-color: var(--tertiary-color); /* Change this to any color you prefer */
 }
 
+/* ::-webkit-scrollbar-track {
+    background: transparent;
+  } */
+
 #paragraph.selectable {
     cursor: copy;
 }
@@ -126,7 +130,7 @@ header {
             width: 100%;
 
             &:hover,
-            :focus-visible {
+            &:focus-visible {
                 background: var(--light-gray);
                 cursor: pointer;
                 outline: none;
@@ -149,6 +153,7 @@ main {
     left: 140px;
     transform: translateY(-50%);
     overflow: auto;
+    scrollbar-color: black transparent;
 
     & section {
         min-width: var(--box-width);
@@ -156,6 +161,14 @@ main {
         background: var(--light-gray);
         padding: 20px;
         border-radius: 5px;
+        
+        &:hover{
+            cursor: move;
+        }
+
+        &.over{
+            border: 3px dotted var(--secondary-color);
+        }
 
         & .top-column {
             margin-bottom: 10px;
