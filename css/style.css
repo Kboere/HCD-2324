@@ -28,7 +28,7 @@
     position: absolute;
     width: 5px;
     height: 1em;
-    background-color: var(--primary-color);
+    background-color: var(--tertiary-color);
     animation: blinking infinite linear 0.5s;
 }
 
@@ -48,6 +48,19 @@ body {
     width: 100dvw;
     overflow: hidden;
     font-family: sans-serif;
+
+    &.selectable{
+        & main{
+            & section{
+                user-select: text;
+
+                &:hover{
+                    cursor: text;
+                }
+            }
+        
+        }
+    }
 }
 
 header {
@@ -162,6 +175,7 @@ main {
         background: var(--light-gray);
         padding: 20px;
         border-radius: 5px;
+        user-select: text;
         
         &:hover{
             cursor: move;
