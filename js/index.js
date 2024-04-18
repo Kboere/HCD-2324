@@ -123,6 +123,7 @@ function pasteText() {
 
 function copyInput() {
     const textarea = document.getElementById('paste');
+    event.stopPropagation();
     if (textarea) {
         textarea.select();
         document.execCommand("copy");
@@ -141,6 +142,7 @@ function copyInput() {
 
 function emptyInput() {
     const textarea = document.getElementById('paste');
+    event.stopPropagation();
     if (textarea) {
         textarea.value = '';
 
@@ -151,6 +153,7 @@ function emptyInput() {
 }
 
 function sendToWhatsApp() {
+    event.stopPropagation();
     const inputField = document.getElementById("paste").value;
     const encodedText = encodeURIComponent(inputField);
     const whatsappUrl = "https://api.whatsapp.com/send?text=" + encodedText;
@@ -277,7 +280,7 @@ document.addEventListener('DOMContentLoaded', () => {
     pasteButtonInput.addEventListener("click", function(event) {
         popup.style.display = "none";
         popup.classList.remove("hide");
-        // event.stopPropagation();
+        event.stopPropagation();
         copyInput();
     });
 
@@ -285,7 +288,7 @@ document.addEventListener('DOMContentLoaded', () => {
     clearButtonInput.addEventListener("click", function(event) {
         popup.style.display = "none";
         popup.classList.remove("hide");
-        // event.stopPropagation();
+        event.stopPropagation();
         emptyInput();
     });
 
