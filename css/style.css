@@ -69,6 +69,7 @@ body {
     flex-wrap: nowrap;
     flex-direction: row;
     justify-content: space-between;
+    gap: 2rem;
 
     &.selectable{
         & main{
@@ -107,32 +108,34 @@ header {
         }
     }
 
-    & button#menuToggle {
-        border-radius: 50%;
+    & button:first-of-type{
+        margin-bottom: 3rem;
+    }
+
+    & button {
+        border-radius: 5px;
         width: 50px;
         height: 50px;
         text-align: center;
         font-size: 2rem;
         display: flex;
         position: relative;
-        background: #fff;
+        background: var(--secondary-color);
         padding: 0;
         align-content: center;
         align-items: center;
         justify-content: center;
         border: none;
-        color: var(--secondary-color);
+        color: var(--primary-color);
         transition: all 0.3s ease;
         cursor: pointer;
+        margin-bottom: 1rem;
 
         &:focus-visible,
         &:hover {
+            background: var(--light-gray);
             color: var(--secondary-color);
             outline: none;
-        }
-
-        & i {
-            margin-left: -7px;
         }
     }
 
@@ -162,6 +165,7 @@ header {
             margin-bottom: 1rem;
             border-radius: 5px;
             width: 100%;
+            font-size: 1.2rem;
 
             &:hover,
             &:focus-visible {
@@ -227,8 +231,36 @@ main {
 footer{
     position: relative;
     width: 20%;
-    background-color: var(--primary-color);
-    padding: 1rem;;
+    background-color: var(--light-gray);
+    padding: 1rem;
+    overflow: auto;
+    padding-bottom: 4rem;
+
+    &::-webkit-scrollbar {
+        width: 15px; /* Width of the scrollbar */
+    }
+
+    & section:last-of-type{
+        margin-top: 2rem;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+
+        & button{
+            background: var(--secondary-color);
+            padding: 1rem;
+            color: var(--primary-color);
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+
+            &:hover{
+                background: var(--primary-color);
+                color: var(--secondary-color);
+            }
+        }
+    }
 
     & #paste{
         width: 100%;
@@ -236,27 +268,36 @@ footer{
         overflow: visible;
         margin: auto;
         margin-top: 2rem;
+        border: none;
+        background-color: var(--primary-color);
+
+        &::-webkit-scrollbar {
+            width: 15px; /* Width of the scrollbar */
+        }
+
+        &:focus{
+            outline: none;
+        }
     }
 }
 
-/* <div id="popup" class="popup">Text copied to clipboard!</div> */
 
-.popup {
+
+#popup {
     display: none;
-    position: fixed;
-    top: 50%;
-    right: 0;
-    transform: translateX(100%);
-    background-color: rgba(0, 0, 0, 0.8);
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background-color: rgba(0, 0, 0, 1);
     color: #fff;
     padding: 10px;
     border-radius: 5px;
     z-index: 9999;
-    animation: slideInRight 0.5s ease forwards;
+    animation: slideInRight 1s ease forwards, slideOutRight 1s 6s ease forwards;
 }
 
-.popup.hide {
-    animation: slideOutRight 0.5s ease forwards;
+#popup.hide {
+    animation: slideInRight 1s ease forwards, slideOutRight 1s 6s ease forwards;
 }
 
 @keyframes blinking {
@@ -271,20 +312,20 @@ footer{
 
 @keyframes slideInRight {
     0% {
-        transform: translateX(100%);
+        opacity: 0;
     }
 
     100% {
-        transform: translateX(0);
+        opacity: 1;
     }
 }
 
 @keyframes slideOutRight {
     0% {
-        transform: translateX(0);
+        opacity: 1;
     }
 
     100% {
-        transform: translateX(100%);
+        opacity: 0;
     }
 }

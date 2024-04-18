@@ -1,4 +1,5 @@
 const selectedPoints = [];
+const popup = document.getElementById("popup");
 const body = document.body;
 let selectedInputField = null;
 let isTextSelectionActive = false; // Flag to track if text selection is active
@@ -19,6 +20,9 @@ function handleWordSelection(event) {
                 const newIndicator = document.createElement("span");
                 newIndicator.classList.add("first-click-indicator");
                 clickedPoint.insertNode(newIndicator);
+
+                popup.style.display = "block";
+                popup.textContent = "1 woord geselecteerd, selecteer nog 1 woord om te kopiëren.";
             }
         }
 
@@ -28,7 +32,8 @@ function handleWordSelection(event) {
             body.classList.remove("selectable");
             body.classList.add("dragging");
             isTextSelectionActive = false;
-        console.log("Word selection within the body is disabled.");
+            console.log("Word selection within the body is disabled.");
+            popup.style.display = "none";
 
             // Remove the indicator node if it exists
             if (firstClickIndicator) {
@@ -52,9 +57,15 @@ function handleWordSelection(event) {
             selection.removeAllRanges();
             selection.addRange(selectionRange);
 
+            popup.style.display = "block";
+            popup.textContent = "De geselecteerde tekst is gekopieerd naar het klembord!";
+            popup.classList.add("hide");
+
             // Reset selection
             selectedPoints.length = 0;
         }
+
+        // popup.classList.add("hide");
     }
 }
 
@@ -78,7 +89,7 @@ function toggleWordSelection() {
     if (!body.classList.contains("selectable")) {
         // Add event listener to allow word selection
         body.classList.add("selectable");
-        // body.classList.remove("dragging");
+        body.classList.remove("dragging");
         body.addEventListener("click", handleWordSelection);
         isTextSelectionActive = true;
         console.log("You can now select text within the body.");
@@ -96,6 +107,16 @@ function pasteText() {
     if (selectedInputField) {
         navigator.clipboard.readText().then(text => {
             selectedInputField.value += text;
+
+            popup.style.display = "block";
+            popup.textContent = "De gekopieerde tekst is geplakt!";
+            popup.classList.add("hide");
+
+            // set a timeout of 6 seconds to remove the hide class of the popup
+            setTimeout(() => {
+                popup.classList.remove("hide");
+                popup.style.display = "none";
+            }, 7000);
         });
     }
 }
@@ -105,6 +126,16 @@ function copyInput() {
     if (textarea) {
         textarea.select();
         document.execCommand("copy");
+
+        popup.classList.add("hide");
+        popup.style.display = "block";
+        popup.textContent = "De nieuwe tekst is gekopieerd naar het klembord!";
+
+        // set a timeout of 6 seconds to remove the hide class of the popup
+        setTimeout(() => {
+            popup.classList.remove("hide");
+            popup.style.display = "none";
+        }, 7000);
     }
 }
 
@@ -112,6 +143,10 @@ function emptyInput() {
     const textarea = document.getElementById('paste');
     if (textarea) {
         textarea.value = '';
+
+        popup.classList.add("hide");
+        popup.style.display = "block";
+        popup.textContent = "het tekstveld is leeg gemaakt!";
     }
 }
 
@@ -126,22 +161,26 @@ function sendToWhatsApp() {
 const moveUpButton = document.getElementById("moveUp");
 moveUpButton.addEventListener("click", () => {
     const mainElement = document.querySelector("main");
-    mainElement.scrollTop -= 50; 
+    mainElement.scrollTop -= 100; 
+    event.stopPropagation();
 });
 const moveDownButton = document.getElementById("moveDown");
 moveDownButton.addEventListener("click", () => {
     const mainElement = document.querySelector("main");
-    mainElement.scrollTop += 50;
+    mainElement.scrollTop += 100;
+    event.stopPropagation();
 });
 const moveLeftButton = document.getElementById("moveLeft");
 moveLeftButton.addEventListener("click", () => {
     const mainElement = document.querySelector("main");
-    mainElement.scrollLeft -= 50;
+    mainElement.scrollLeft -= 100;
+    event.stopPropagation();
 });
 const moveRightButton = document.getElementById("moveRight");
 moveRightButton.addEventListener("click", () => {
     const mainElement = document.querySelector("main");
-    mainElement.scrollLeft += 50; 
+    mainElement.scrollLeft += 100; 
+    event.stopPropagation();
 });
 
 
@@ -222,12 +261,32 @@ document.addEventListener('DOMContentLoaded', () => {
     selectButton.addEventListener("click", function(event) {
         event.stopPropagation();
         toggleWordSelection();
+        popup.style.display = "none";
+        popup.classList.remove("hide");
     });
 
     const pasteButton = document.getElementById("pasteButton");
     pasteButton.addEventListener("click", function(event) {
         event.stopPropagation();
         pasteText();
+        popup.style.display = "none";
+        popup.classList.remove("hide");
+    });
+
+    const pasteButtonInput = document.getElementById("copyField");
+    pasteButtonInput.addEventListener("click", function(event) {
+        popup.style.display = "none";
+        popup.classList.remove("hide");
+        // event.stopPropagation();
+        copyInput();
+    });
+
+    const clearButtonInput = document.getElementById("emptyField");
+    clearButtonInput.addEventListener("click", function(event) {
+        popup.style.display = "none";
+        popup.classList.remove("hide");
+        // event.stopPropagation();
+        emptyInput();
     });
 
     // Add event listener to all input fields
