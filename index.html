@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="./css/style.css">
 </head>
 
-<body id="paragraph">
+<body id="paragraph" class="dragging">
 
     <header>
         <button id="menuToggle"><i class='bx bx-horizontal-left bx-rotate-180'></i></button>
@@ -19,6 +19,11 @@
             <button id="selectButton">Selecteer tekst</button>
             <button id="pasteButton">plak tekst</button>
         </div>
+
+        <button id="moveUp"><i class='bx bxs-up-arrow-circle' ></i></button>
+        <button id="moveDown"><i class='bx bxs-up-arrow-circle bx-rotate-180' ></i></button>
+        <button id="moveLeft"><i class='bx bxs-up-arrow-circle bx-rotate-270' ></i></button>
+        <button id="moveRight"><i class='bx bxs-up-arrow-circle bx-rotate-90' ></i></button>
     </header>
 
     <main>
@@ -166,7 +171,7 @@
             </div>
         </section>
 
-        <section class="item" draggable="true" data-boxtype="done">
+        <!-- <section class="item" draggable="true" data-boxtype="done">
 
             <div class="top-column">
                 <h2>Done:</h2>
@@ -179,10 +184,30 @@
             <div class="box">
                 <textarea class="inputField" data-textarea="2" name="paste" id="paste" cols="30" rows="10"></textarea>
             </div>
-        </section>
+        </section> -->
 
     </main>
+
+    <footer>
+        <section data-boxtype="done">
+
+            <div class="top-column">
+                <h2>Plak you selectie:</h2>
+            </div>
+
+            <div class="box">
+                <textarea class="inputField" data-textarea="1" name="paste" id="paste" cols="30" rows="10"></textarea>
+            </div>
+        </section>
+
+        <section>
+            <button id="copyField" onclick="copyInput()">Kopieer veld</button>
+            <button id="emptyField" onclick="emptyInput()">Leeg veld</button>
+            <button onclick="sendToWhatsApp()">Whatsapp</button>
+        </section>
+    </footer>
     <script src="./js/index.js"></script>
+
 </body>
 
 </html>

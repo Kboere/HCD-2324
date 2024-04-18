@@ -23,6 +23,13 @@ function handleWordSelection(event) {
         }
 
         if (selectedPoints.length === 2) {
+
+            body.removeEventListener("click", handleWordSelection);
+            body.classList.remove("selectable");
+            body.classList.add("dragging");
+            isTextSelectionActive = false;
+        console.log("Word selection within the body is disabled.");
+
             // Remove the indicator node if it exists
             if (firstClickIndicator) {
                 firstClickIndicator.remove();
@@ -71,12 +78,14 @@ function toggleWordSelection() {
     if (!body.classList.contains("selectable")) {
         // Add event listener to allow word selection
         body.classList.add("selectable");
+        // body.classList.remove("dragging");
         body.addEventListener("click", handleWordSelection);
         isTextSelectionActive = true;
         console.log("You can now select text within the body.");
     } else {
         // Remove event listener to prevent further selections
         body.classList.remove("selectable");
+        body.classList.add("dragging");
         body.removeEventListener("click", handleWordSelection);
         isTextSelectionActive = false;
         console.log("Word selection within the body is disabled.");
@@ -90,6 +99,51 @@ function pasteText() {
         });
     }
 }
+
+function copyInput() {
+    const textarea = document.getElementById('paste');
+    if (textarea) {
+        textarea.select();
+        document.execCommand("copy");
+    }
+}
+
+function emptyInput() {
+    const textarea = document.getElementById('paste');
+    if (textarea) {
+        textarea.value = '';
+    }
+}
+
+function sendToWhatsApp() {
+    const inputField = document.getElementById("paste").value;
+    const encodedText = encodeURIComponent(inputField);
+    const whatsappUrl = "https://api.whatsapp.com/send?text=" + encodedText;
+    window.open(whatsappUrl, '_blank');
+}
+
+
+const moveUpButton = document.getElementById("moveUp");
+moveUpButton.addEventListener("click", () => {
+    const mainElement = document.querySelector("main");
+    mainElement.scrollTop -= 50; 
+});
+const moveDownButton = document.getElementById("moveDown");
+moveDownButton.addEventListener("click", () => {
+    const mainElement = document.querySelector("main");
+    mainElement.scrollTop += 50;
+});
+const moveLeftButton = document.getElementById("moveLeft");
+moveLeftButton.addEventListener("click", () => {
+    const mainElement = document.querySelector("main");
+    mainElement.scrollLeft -= 50;
+});
+const moveRightButton = document.getElementById("moveRight");
+moveRightButton.addEventListener("click", () => {
+    const mainElement = document.querySelector("main");
+    mainElement.scrollLeft += 50; 
+});
+
 
 document.addEventListener('DOMContentLoaded', () => {
     let dragSrcEl = null;
@@ -162,13 +216,6 @@ document.addEventListener('DOMContentLoaded', () => {
     menuBtn.addEventListener("click", function(event) {
         header.classList.toggle("open");
         event.stopPropagation();
-    });
-
-    document.addEventListener("keyup", function(event) {
-        // Check if the 't' key was pressed
-        if (event.key === "t") {
-            header.classList.toggle("open");
-        }
     });
 
     const selectButton = document.getElementById("selectButton");
