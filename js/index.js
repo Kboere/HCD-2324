@@ -15,6 +15,7 @@ function handleWordSelection(event) {
         if (selectedPoints.length < 2) {
             selectedPoints.push(clickedPoint);
 
+
             // If the indicator node doesn't exist, create and insert it
             if (!firstClickIndicator) {
                 const newIndicator = document.createElement("span");
@@ -68,6 +69,22 @@ function handleWordSelection(event) {
         // popup.classList.add("hide");
     }
 }
+
+body.addEventListener('mousemove', function(event) {
+    if (selectedPoints.length === 1) {
+        const clickedPoint = document.caretRangeFromPoint(event.clientX, event.clientY);
+        const selectionRange = document.createRange();
+        selectionRange.setStart(selectedPoints[0].startContainer, selectedPoints[0].startOffset);
+        selectionRange.setEnd(clickedPoint.startContainer, clickedPoint.startOffset);
+
+        const selectedText = selectionRange.toString().trim();
+
+        // Apply the selection to the document
+        const selection = window.getSelection();
+        selection.removeAllRanges();
+        selection.addRange(selectionRange);
+    }
+});
 
 function copyToClipboard(text) {
     // Remove line breaks and extra whitespace
@@ -155,9 +172,19 @@ function emptyInput() {
 function sendToWhatsApp() {
     event.stopPropagation();
     const inputField = document.getElementById("paste").value;
-    const encodedText = encodeURIComponent(inputField);
-    const whatsappUrl = "https://api.whatsapp.com/send?text=" + encodedText;
-    window.open(whatsappUrl, '_blank');
+
+    if (inputField === "") {
+        popup.classList.add("hide");
+        popup.style.display = "block";
+        popup.textContent = "Je hebt geen tekst o te versturen!";
+    } else {
+        const encodedText = encodeURIComponent(inputField);
+        const whatsappUrl = "https://api.whatsapp.com/send?text=" + encodedText;
+        window.open(whatsappUrl, '_blank');
+    }
+    // const encodedText = encodeURIComponent(inputField);
+    // const whatsappUrl = "https://api.whatsapp.com/send?text=" + encodedText;
+    // window.open(whatsappUrl, '_blank');
 }
 
 
