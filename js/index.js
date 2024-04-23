@@ -14,7 +14,9 @@ function handleWordSelection(event) {
 
         if (selectedPoints.length < 2) {
             selectedPoints.push(clickedPoint);
-
+            const audio = new Audio('mp3/plop.mp3');
+            audio.play();
+            audio.volume = 1;
 
             // If the indicator node doesn't exist, create and insert it
             if (!firstClickIndicator) {

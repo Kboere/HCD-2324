@@ -11,6 +11,10 @@
     --light-gray: #f2f2f2;
 }
 
+p {
+    transition: .5s;
+}
+
 ::selection {
     background-color: var(--tertiary-color); /* Change this to any color you prefer */
 }
@@ -223,6 +227,7 @@ main {
                 background-color: var(--primary-color);
                 padding: 20px;
                 border-radius: 10px;
+            
             }
         }
     }
