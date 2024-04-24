@@ -178,17 +178,30 @@ function sendToWhatsApp() {
     if (inputField === "") {
         popup.classList.add("hide");
         popup.style.display = "block";
-        popup.textContent = "Je hebt geen tekst o te versturen!";
+        popup.textContent = "Je hebt geen tekst om te versturen!";
     } else {
         const encodedText = encodeURIComponent(inputField);
         const whatsappUrl = "https://api.whatsapp.com/send?text=" + encodedText;
         window.open(whatsappUrl, '_blank');
     }
-    // const encodedText = encodeURIComponent(inputField);
-    // const whatsappUrl = "https://api.whatsapp.com/send?text=" + encodedText;
-    // window.open(whatsappUrl, '_blank');
 }
 
+function countCharacters(inputFieldId, countElementId) {
+    const inputField = document.getElementById(inputFieldId);
+    const countElement = document.getElementById(countElementId);
+
+    // Update character count on input and paste events
+    inputField.addEventListener('input', updateCharacterCount);
+    inputField.addEventListener('paste', updateCharacterCount);
+
+    function updateCharacterCount() {
+        const characterCount = `${inputField.value.length} karakters`;
+        countElement.textContent = characterCount;
+    }
+}
+
+// Example usage:
+countCharacters('paste', 'characterCount');
 
 const moveUpButton = document.getElementById("moveUp");
 moveUpButton.addEventListener("click", () => {
@@ -295,6 +308,7 @@ document.addEventListener('DOMContentLoaded', () => {
         toggleWordSelection();
         popup.style.display = "none";
         popup.classList.remove("hide");
+        header.classList.remove("open");
     });
 
     const pasteButton = document.getElementById("pasteButton");
@@ -311,6 +325,7 @@ document.addEventListener('DOMContentLoaded', () => {
         popup.classList.remove("hide");
         event.stopPropagation();
         copyInput();
+        pasteButtonInput.textContent = 'gekopieerd!'
     });
 
     const clearButtonInput = document.getElementById("emptyField");
@@ -319,6 +334,7 @@ document.addEventListener('DOMContentLoaded', () => {
         popup.classList.remove("hide");
         event.stopPropagation();
         emptyInput();
+        clearButtonInput.textContent = 'leeg gemaakt!'
     });
 
     // Add event listener to all input fields
